@@ -48,3 +48,6 @@ next-env.d.ts
 /foundry/lib
 
 /foundry/lib/forge-std
+
+/foundry/broadcast
+/foundry/cache
