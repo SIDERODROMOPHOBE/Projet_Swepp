@@ -6,7 +6,8 @@ import "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
 contract Token2 is ERC20{
     //Bad apple token tkaes the price of something in chainlink
-
+    //address is 0x244824263654D2b1573a2BD68336237D9388CA8e
+    
     address GodUser = 0x2bdC20F9377221032bcBFBcf9Ea5bB8B4A212165;
     address OtherUser =0x2bdC20F9377221032bcBFBcf9Ea5bB8B4A212165;
 
