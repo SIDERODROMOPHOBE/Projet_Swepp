@@ -22,16 +22,6 @@ interface VmSafe {
         RecurrentPrank
     }
 
-    enum AccountAccessKind {
-        Call,
-        DelegateCall,
-        CallCode,
-        StaticCall,
-        Create,
-        SelfDestruct,
-        Resume
-    }
-
     struct Log {
         bytes32[] topics;
         bytes data;
@@ -41,18 +31,6 @@ interface VmSafe {
     struct Rpc {
         string key;
         string url;
-    }
-
-    struct EthGetLogs {
-        address emitter;
-        bytes32[] topics;
-        bytes data;
-        bytes32 blockHash;
-        uint64 blockNumber;
-        bytes32 transactionHash;
-        uint64 transactionIndex;
-        uint256 logIndex;
-        bool removed;
     }
 
     struct DirEntry {
@@ -86,35 +64,6 @@ interface VmSafe {
         bytes stderr;
     }
 
-    struct ChainInfo {
-        uint256 forkId;
-        uint256 chainId;
-    }
-
-    struct AccountAccess {
-        ChainInfo chainInfo;
-        AccountAccessKind kind;
-        address account;
-        address accessor;
-        bool initialized;
-        uint256 oldBalance;
-        uint256 newBalance;
-        bytes deployedCode;
-        uint256 value;
-        bytes data;
-        bool reverted;
-        StorageAccess[] storageAccesses;
-    }
-
-    struct StorageAccess {
-        address account;
-        bytes32 slot;
-        bool isWrite;
-        bytes32 previousValue;
-        bytes32 newValue;
-        bool reverted;
-    }
-
     // ======== EVM  ========
 
     // Gets the address for a given private key
@@ -136,13 +85,6 @@ interface VmSafe {
 
     // Gets all accessed reads and write slot from a `vm.record` session, for a given address
     function accesses(address target) external returns (bytes32[] memory readSlots, bytes32[] memory writeSlots);
-
-    // Record all account accesses as part of CREATE, CALL or SELFDESTRUCT opcodes in order,
-    // along with the context of the calls.
-    function startStateDiffRecording() external;
-
-    // Returns an ordered array of all account accesses from a `vm.startStateDiffRecording` session.
-    function stopAndReturnStateDiff() external returns (AccountAccess[] memory accountAccesses);
 
     // -------- Recording Map Writes --------
 
@@ -180,16 +122,6 @@ interface VmSafe {
 
     // Resumes gas metering (i.e. gas usage is counted again). Noop if already on.
     function resumeGasMetering() external;
-
-    // -------- RPC Methods --------
-
-    /// Gets all the logs according to specified filter.
-    function eth_getLogs(uint256 fromBlock, uint256 toBlock, address target, bytes32[] calldata topics)
-        external
-        returns (EthGetLogs[] memory logs);
-
-    // Performs an Ethereum JSON-RPC request to the current fork URL.
-    function rpc(string calldata method, string calldata params) external returns (bytes memory data);
 
     // ======== Test Configuration ========
 
@@ -459,19 +391,6 @@ interface VmSafe {
     // Gets the deployed bytecode from an artifact file. Takes in the relative path to the json file
     function getDeployedCode(string calldata artifactPath) external view returns (bytes memory runtimeBytecode);
 
-    // Compute the address a contract will be deployed at for a given deployer address and nonce.
-    function computeCreateAddress(address deployer, uint256 nonce) external pure returns (address);
-
-    // Compute the address of a contract created with CREATE2 using the given CREATE2 deployer.
-    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash, address deployer)
-        external
-        pure
-        returns (address);
-
-    // Compute the address of a contract created with CREATE2 using foundry's default CREATE2
-    // deployer: 0x4e59b44847b379578588920cA78FbF26c0B4956C, https://github.com/Arachnid/deterministic-deployment-proxy
-    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) external pure returns (address);
-
     // ======== JSON Parsing and Manipulation ========
 
     // -------- Reading --------
@@ -620,9 +539,6 @@ interface Vm is VmSafe {
 
     // Sets an address' code
     function etch(address target, bytes calldata newRuntimeBytecode) external;
-
-    // Load a genesis JSON file's `allocs` into the in-memory state.
-    function loadAllocs(string calldata pathToAllocsJson) external;
 
     // Resets the nonce of an account to 0 for EOAs and 1 for contract accounts
     function resetNonce(address account) external;

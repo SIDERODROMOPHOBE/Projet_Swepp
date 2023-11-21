@@ -159,18 +159,10 @@ abstract contract StdChains {
                 } else {
                     chain.rpcUrl = vm.envString(envName);
                 }
-                // Distinguish 'not found' from 'cannot read'
-                // The upstream error thrown by forge for failing cheats changed so we check both the old and new versions
-                bytes memory oldNotFoundError =
+                // distinguish 'not found' from 'cannot read'
+                bytes memory notFoundError =
                     abi.encodeWithSignature("CheatCodeError", string(abi.encodePacked("invalid rpc url ", chainAlias)));
-                bytes memory newNotFoundError = abi.encodeWithSignature(
-                    "CheatcodeError(string)", string(abi.encodePacked("invalid rpc url: ", chainAlias))
-                );
-                bytes32 errHash = keccak256(err);
-                if (
-                    (errHash != keccak256(oldNotFoundError) && errHash != keccak256(newNotFoundError))
-                        || bytes(chain.rpcUrl).length == 0
-                ) {
+                if (keccak256(notFoundError) != keccak256(err) || bytes(chain.rpcUrl).length == 0) {
                     /// @solidity memory-safe-assembly
                     assembly {
                         revert(add(32, err), mload(err))
