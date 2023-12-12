@@ -38,7 +38,8 @@ contract Marketplace
 
 
     //faire le approve avant (j'ai jamais compris comment ca marche le vieux approve la grrrrerrerrrer)
-    //azy je vais faire sans le approve, go créer une technologie là
+    //Ducoup dans le front, faire un bouton approve, uis faire un bouton swap
+    //le approve est un call via abi ERC20 sur le contract du bat token
     function swap(uint256 _amount) public
     {
         BadApple_Minter.CreateMoney(msg.sender, _amount);

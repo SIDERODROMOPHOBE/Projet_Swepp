@@ -1,13 +1,26 @@
 'use client'
 
 import { BaseError } from 'viem'
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useAccount, useConnect, useDisconnect,configureChains,sepolia,createConfig  } from 'wagmi'
+import { infuraProvider } from 'wagmi/providers/infura'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 
 export function Connect() {
   const { connector, isConnected } = useAccount()
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect()
   const { disconnect } = useDisconnect()
+
+
+  const { chains, publicClient } = configureChains(
+    [sepolia],
+    [infuraProvider({ apiKey: '01d84256042040afb53ee2ef68300312' })],
+  )
+  const config = createConfig({
+    autoConnect: true,
+    connectors: [new MetaMaskConnector],
+    publicClient,
+  })
 
   return (
     <div>
@@ -28,7 +41,8 @@ export function Connect() {
           ))}
       </div>
 
-      {error && <div>{(error as BaseError).shortMessage}</div>}
+      {//error && <div>{(error as BaseError).shortMessage}</div>
+      }
     </div>
   )
 }
