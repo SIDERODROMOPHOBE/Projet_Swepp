@@ -5,6 +5,7 @@ import {Script, console2} from "forge-std/Script.sol";
 
 import {Token1} from "../src/Token1.sol";
 import {Token2} from "../src/Token2.sol";
+import {Marketplace} from "../src/Marketplace.sol";
 
 
 contract DeploymentScript is Script {
@@ -12,7 +13,9 @@ contract DeploymentScript is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        new Token2();
+        //new Token1();
+        //new Token2();
+        new Marketplace();
         
 
         vm.stopBroadcast();

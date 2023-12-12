@@ -1,13 +1,12 @@
 'use client'
 
-import { Connect } from '../components/Connect'
-import { Connected } from '../components/Connected'
+import {Connected} from '../components/Connected'
 import {Swapper} from '../components/Swapper'
-import { Navbar } from '../components/Navbar'
+import {Navbar} from '../components/Navbar'
 
-import { NetworkSwitcher } from '../components/NetworkSwitcher'
+import {NetworkSwitcher} from '../components/NetworkSwitcher'
 
-import { useNetwork } from 'wagmi'
+import {useNetwork} from 'wagmi'
 
 import '../../Styles/globals.css'
 
@@ -27,11 +26,11 @@ export default function Page() {
 <br/>
     
 
-        { (chain?.name!=="Sepolia") &&
+        { (chain?.name!=="Goerli") &&
 
     <div>
       
-        Vous êtes connecté(e) au mauvais réseau. Cette application fonctionne sur le réseau Sepolia. &nbsp;
+        Vous êtes connecté(e) au mauvais réseau. Cette application fonctionne sur le réseau Göerli. &nbsp;
       
       <NetworkSwitcher />
     </div>
@@ -41,9 +40,9 @@ export default function Page() {
 
         
         <br />
-
+        { (chain?.name==="Goerli") &&
         <Swapper />
-
+      }
       </Connected>
       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>

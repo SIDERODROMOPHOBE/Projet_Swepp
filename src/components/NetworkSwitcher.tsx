@@ -16,9 +16,9 @@ export function NetworkSwitcher() {
       {switchNetwork && (
              
           
-              <button className='hover:text-red-200 text-red-500 underline' onClick={() => switchNetwork(11155111)}>
+              <button className='hover:text-red-200 text-red-500 underline' onClick={() => switchNetwork(5)}>
                 
-     {(isLoading && 11155111 === pendingChainId)? ' Changement de réseau en cours. Vérifiez votre Wallet':'Connect to Sepolia'}
+     {(isLoading && 5 === pendingChainId)? ' Changement de réseau en cours. Vérifiez votre Wallet':'Connect to Goerli'}
               </button>
             
           
