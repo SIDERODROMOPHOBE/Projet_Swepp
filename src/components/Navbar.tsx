@@ -2,7 +2,8 @@
 
 import '../../Styles/globals.css'
 import { Connect } from '../components/Connect'
-
+import foto from '../../Styles/gab-logos_transparent.png'
+import Image from 'next/image'
 
 export function Navbar()
 {
@@ -18,8 +19,8 @@ export function Navbar()
 
     <a className="flex items-center space-x-3 rtl:space-x-reverse">
 
+      <Image src={foto} width={50} height={50} alt='Logo GabCorp'/>
 
-        <img src='../../Styles/gab-logos_transparent.png' alt='lol'/>
         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">GabSwapper</span>
     </a>
 

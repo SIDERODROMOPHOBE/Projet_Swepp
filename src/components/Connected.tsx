@@ -14,6 +14,9 @@ export function Connected({ children }: { children: React.ReactNode }) {
   if (!myAccount.isConnected) return null
   return (
   <>
+  {/*
+
+  
   <div>
     <h1>
       Connected to : {myAccount.address}
@@ -23,6 +26,7 @@ export function Connected({ children }: { children: React.ReactNode }) {
       Balance : {myBalance.data?.formatted}  {myBalance.data?.symbol}
     </h1>
   </div>
+  */}
 
   {children}
 

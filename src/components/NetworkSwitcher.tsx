@@ -9,25 +9,22 @@ export function NetworkSwitcher() {
     useSwitchNetwork()
 
   return (
-    <div>
-      <div>
-        Connected to {chain?.name ?? chain?.id}
-      </div>
-      <br />
+    <>
+    
+
+
       {switchNetwork && (
-        <div>
-          Switch to:{' '}
+             
           
-              <button  onClick={() => switchNetwork(11155111)}>
-                Sepolia
-                {isLoading && 11155111 === pendingChainId && ' (switching)'}
+              <button className='hover:text-red-200 text-red-500 underline' onClick={() => switchNetwork(11155111)}>
+                
+     {(isLoading && 11155111 === pendingChainId)? ' Changement de réseau en cours. Vérifiez votre Wallet':'Connect to Sepolia'}
               </button>
             
           
-        </div>
       )}
-
-      <div>{error?.message}</div>
-    </div>
+    
+    
+    </>
   )
 }

@@ -25,7 +25,7 @@ export function Connect() {
   return (
    
      <div className='flex flex-row-reverse'>
-          <ul className="text-gray-200 flex flex-col font-medium p-4 md:p-0 mt-4 border border-red-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="text-gray-200 flex flex-col font-medium md:p-0 border border-red-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
       
         {connectors
           .filter((x) => x.ready && x.id !== connector?.id)
@@ -33,7 +33,7 @@ export function Connect() {
             <li>
 
             
-            <button className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" key={x.id} onClick={
+            <button className="block px-1 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" key={x.id} onClick={
               () => {connect({ connector: x })
               location.reload()}
               }>
@@ -43,8 +43,12 @@ export function Connect() {
             </li>
           ))}
           <li>
-          <button className="block px-4 py-2 text-red-200 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-red-500" onClick={() => disconnect()}>Disconnect</button>
-            
+          <button className="block flex px-1 py-2 text-red-200 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-red-500" onClick={() => disconnect()}>Disconnect</button>
+          </li>
+          <li>
+          <button className="block flex px-1 py-2 text-red-200 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-red-500" onClick={() => window.location.href = 'https://github.com/SIDERODROMOPHOBE/Projet_Swepp'}>Github</button>
+          
+
           </li>
           </ul>
         </div>
