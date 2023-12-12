@@ -12,7 +12,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <div className='bg-indigo-950'>
+
         <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   )

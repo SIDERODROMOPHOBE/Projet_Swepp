@@ -1,7 +1,7 @@
-
-
 import { Connect } from '../components/Connect'
 import { Connected } from '../components/Connected'
+import {Swapper} from '../components/Swapper'
+import { Navbar } from '../components/Navbar'
 
 import { NetworkSwitcher } from '../components/NetworkSwitcher'
 
@@ -9,21 +9,26 @@ import { NetworkSwitcher } from '../components/NetworkSwitcher'
 import '../../Styles/globals.css'
 
 export default function Page() {
+  
   return (
-    <div>
-          <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-      <h1>wagmi + Next.js</h1>
-      <Connect />
+    <>
+
+  
+    <Navbar/>
+
+    <div className='m-2 text-white'>
+
       <Connected>
-        <hr />
+<br/>
         <h2>Network</h2>
         <NetworkSwitcher />
         <br />
-        <hr />
+
+        <Swapper />
 
       </Connected>
+      <br/><br/><br/><br/><br/><br/><br/>
     </div>
+    </>
   )
 }

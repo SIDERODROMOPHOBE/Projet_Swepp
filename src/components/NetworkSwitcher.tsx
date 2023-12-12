@@ -1,6 +1,7 @@
 'use client'
 
 import { useNetwork, useSwitchNetwork } from 'wagmi'
+import '../../Styles/globals.css'
 
 export function NetworkSwitcher() {
   const { chain } = useNetwork()
@@ -11,20 +12,18 @@ export function NetworkSwitcher() {
     <div>
       <div>
         Connected to {chain?.name ?? chain?.id}
-        {chain?.unsupported && ' (unsupported)'}
       </div>
       <br />
       {switchNetwork && (
         <div>
           Switch to:{' '}
-          {chains.map((x) =>
-            x.id === chain?.id ? null : (
-              <button key={x.id} onClick={() => switchNetwork(x.id)}>
-                {x.name}
-                {isLoading && x.id === pendingChainId && ' (switching)'}
+          
+              <button  onClick={() => switchNetwork(11155111)}>
+                Sepolia
+                {isLoading && 11155111 === pendingChainId && ' (switching)'}
               </button>
-            ),
-          )}
+            
+          
         </div>
       )}
 
