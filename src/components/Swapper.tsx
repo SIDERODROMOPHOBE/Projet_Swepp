@@ -27,7 +27,7 @@ export function Swapper()
        
     };
 
-    
+
     //get rate from chainlink for informative purpose only
     const getSwapRate = useContractRead(
         {
@@ -40,6 +40,7 @@ export function Swapper()
 
         
 
+        //Fetch the current rate Directly from the onChain oracle
         useEffect(()=>
         {
         getSwapRate.refetch

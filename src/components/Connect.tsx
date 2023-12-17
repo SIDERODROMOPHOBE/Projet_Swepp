@@ -31,7 +31,7 @@ export function Connect() {
         {connectors
           .filter((x) => x.ready && x.id !== connector?.id)
           .map((x) => (
-            <li>
+            <li key={x.id}>
 
             
             <button className="block px-1 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" key={x.id} onClick={
