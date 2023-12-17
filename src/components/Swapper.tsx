@@ -3,8 +3,8 @@
 import '../../Styles/globals.css'
 import { useContractRead,useContractWrite,usePrepareContractWrite } from 'wagmi'
 import {useEffect, useState, ChangeEvent } from "react";
-import {chainlinkABI} from './contracts'
-
+import {chainlinkABI,bapTokABI,stcTokABI,marketplaceABI} from './contracts'
+import { useDebounce } from '../hooks/useDebounce'
 
 
 
@@ -18,7 +18,9 @@ export function Swapper()
     const [swapRate,setSwapRate]=useState(0)
 
 
-    const [amountToSwap,setAmountToSwap]=useState(0)
+    const [amountToSwap,setAmountToSwap]=useState(1)
+    const debouncedAmountToSwap = useDebounce(amountToSwap, 500)
+
     const updateAmountToSwap = (e: ChangeEvent<HTMLInputElement>) => {
         if (Number(e.target.value)>=0)
         {
@@ -49,15 +51,28 @@ export function Swapper()
     },[])
 
 
+    const prepareApprove = usePrepareContractWrite(
+        {
+            address: '0x33434bf072f7188cea92CE3Da61D75a56F3624A7',
+            ...bapTokABI,
+            functionName: 'approve',
+            args:['0x62c1f8F144f612875BA8AfC74A2504c567615930',BigInt(debouncedAmountToSwap)],
+            enabled:Boolean(debouncedAmountToSwap),
 
+        })
 
-    function testt()
-    {
-        getSwapRate.refetch
-        console.log(getSwapRate.data)
-    }
+        const bapApprove = useContractWrite(prepareApprove.config)
 
-
+        /*
+        const prepareSwap = usePrepareContractWrite(
+            {
+                address: '0x62c1f8F144f612875BA8AfC74A2504c567615930',
+                ...marketplaceABI,
+                functionName: 'swapBAPtoSTC',
+                args:[BigInt(amountToSwap)]
+                
+            })
+            const doSwap = useContractWrite(prepareSwap.config)*/
 
     return(
         
@@ -66,9 +81,16 @@ export function Swapper()
 
   
 
-<button onClick={testt}>TESTT</button>
-<h1>{swapRate}</h1>
-<h1>{amountToSwap}</h1>
+<button onClick={() => bapApprove.write?.()}>approve</button>
+<br/>
+{//<button onClick={() => doSwap.write?.()}>swep</button>
+}
+{bapApprove.isLoading &&
+    <h1>BAPAPPROVE IS LOADING</h1>
+}
+{bapApprove.isIdle &&
+    <h1>BAPAPPROVE IS IDLE</h1>
+}
 
 <center>
 <div className="m-3 w-80 h-300 border-white border-2 rounded-lg bg-violet-950">
