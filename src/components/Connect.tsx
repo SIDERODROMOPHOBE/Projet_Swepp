@@ -4,6 +4,7 @@ import { BaseError } from 'viem'
 import { useAccount, useConnect, useDisconnect,configureChains,sepolia,createConfig  } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { goerli } from 'viem/chains'
 
 export function Connect() {
   const { connector, isConnected } = useAccount()
@@ -13,7 +14,7 @@ export function Connect() {
 
 
   const { chains, publicClient } = configureChains(
-    [sepolia],
+    [goerli],
     [infuraProvider({ apiKey: '01d84256042040afb53ee2ef68300312' })],
   )
   const config = createConfig({
