@@ -18,7 +18,7 @@ export function Swapper()
     const [swapRate,setSwapRate]=useState(0)
 
 
-    const [amountToSwap,setAmountToSwap]=useState(1)
+    const [amountToSwap,setAmountToSwap]=useState(0)
     const debouncedAmountToSwap = useDebounce(amountToSwap, 500)
 
     const updateAmountToSwap = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,20 +51,19 @@ export function Swapper()
     },[])
 
 
-    const prepareApprove = usePrepareContractWrite(
+    const prepareApprove = useContractWrite(
         {
-            address: '0x33434bf072f7188cea92CE3Da61D75a56F3624A7',
+            address: '0x174562BA0BDb890fFd7046C8890EDeEA30eEe93D',
             ...bapTokABI,
             functionName: 'approve',
-            args:['0x62c1f8F144f612875BA8AfC74A2504c567615930',BigInt(debouncedAmountToSwap)],
-            enabled:Boolean(debouncedAmountToSwap),
+            args:['0x62c1f8F144f612875BA8AfC74A2504c567615930',BigInt(amountToSwap*10**18)],
 
         })
 
-        const bapApprove = useContractWrite(prepareApprove.config)
+        //const BapApprove = useContractWrite(prepareApprove.config)
 
-        /*
-        const prepareSwap = usePrepareContractWrite(
+        
+        const prepareSwap = useContractWrite(
             {
                 address: '0x62c1f8F144f612875BA8AfC74A2504c567615930',
                 ...marketplaceABI,
@@ -72,25 +71,23 @@ export function Swapper()
                 args:[BigInt(amountToSwap)]
                 
             })
-            const doSwap = useContractWrite(prepareSwap.config)*/
+
+
+
 
     return(
         
 <>
+
+
+
+
 <div className="bg-indigo-950 mb-10">
 
   
 
-<button onClick={() => bapApprove.write?.()}>approve</button>
 <br/>
-{//<button onClick={() => doSwap.write?.()}>swep</button>
-}
-{bapApprove.isLoading &&
-    <h1>BAPAPPROVE IS LOADING</h1>
-}
-{bapApprove.isIdle &&
-    <h1>BAPAPPROVE IS IDLE</h1>
-}
+
 
 <center>
 <div className="m-3 w-80 h-300 border-white border-2 rounded-lg bg-violet-950">
@@ -108,32 +105,72 @@ export function Swapper()
     <input value={String(amountToSwap*swapRate)} disabled={true} placeholder='StableCoan amount' type="number" id="large-input" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
 <br/>   
 
+
+{(prepareApprove.isIdle||prepareApprove.isError) &&
+    <>
 <h1 className=" text-xs font-medium  text-white">Expected Change Rate ATM is : 1BAP ≈ {swapRate} STC</h1>
 <h1 className="m-1 text-xs font-medium  text-white">(Price rates are based on ETH/U$D live price)</h1>
+    </>
+}
+
+
+
 
 <br/>
+
     <div className='flex flex-row-reverse'>
+ 
+
+    {prepareApprove.isSuccess &&
+    <>
+    
         <div className='border-white border-2 rounded bg-gray-500 hover:bg-gray-800'>
-            <button className='m-1 text-white'>
+            <button onClick={()=>prepareSwap.write?.()} className='m-1 text-white'>
                 Swap Token
             </button>
         </div>
-            
-            &nbsp;
-        <div className='border-white border-2 rounded bg-gray-500 hover:bg-gray-800'>
-            <button className='m-1 text-white'>
+        <h1 className='m-1 text-white'>Token Approve has been Validated. Now click to Swap your token</h1>
+    </>
+        }
+
+
+        &nbsp;
+        {(prepareApprove.isIdle||prepareApprove.isError) &&
+                        <div className='border-white border-2 rounded bg-gray-500 hover:bg-gray-800'>
+
+            <button onClick={() => prepareApprove.write?.()} className='m-1 text-white'>
                 Allow ERC20
             </button>
-        </div>
+        </div>}
+
+
+        {prepareApprove.isLoading && 
+        <div className=' '>
+
+<h1 className='m-1 text-red-500'>
+    Check Wallet to confirm First Transaction
+</h1>
+</div>
+
+        }
+            
+    
 
     </div>
 
-
+    {prepareApprove.isError &&
+    <>
+    <h1 className='m-1 text-red-600'>{prepareApprove.error?.toString()}</h1>
+    </>
+    }
 </div>
 </div>
 </center>
 
-
+<br/>
+<h1>Use<a className='underline bold' href='https://goerli.etherscan.io/address/0x174562BA0BDb890fFd7046C8890EDeEA30eEe93D#writeContract#F2'> this </a> 
+  function to Faucet BAP token to try the Swep</h1>
+<h1>Sorry, did not find enough time to make a proper Faucet, but the function CreateMoney is public there</h1>
 </div>
 
 </>
