@@ -12,6 +12,10 @@ The smart contracts are hosted on Goerli Network
 Most of the Wagmi work is done on the component Swapper.tsx (src/components/swapper.tsx)
 The Webapp Front-end is hosted on Vercel, and accessible [Here](https://projet-swepp.vercel.app/) 
 
+## BadAppel Token Faucet
+To get BAP token to test, go to this link : https://goerli.etherscan.io/address/0x174562BA0BDb890fFd7046C8890EDeEA30eEe93D#writeContract#F2
+and interact with function CreateMoney to get BAP token.
+Sorry for not making a proper faucet
 
 # IF UI NOT WORKING PROPERLY :
 Unfortunately, during concecption i ran out of Goerli Ether si Icould not test the whole UI.
@@ -38,7 +42,7 @@ Git clone this repos
 Open in Command Line interpretor
 
 type :
-npm -i
+npm i
 npm run dev
 
 then on internet browser, go to url [localhost:3000](http://localhost:3000)
