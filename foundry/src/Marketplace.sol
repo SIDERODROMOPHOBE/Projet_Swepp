@@ -25,8 +25,15 @@ interface Chainlink
 
 contract Marketplace 
 {
+    //Goerli Addresses
+    /*
     address BadAppel=0x174562BA0BDb890fFd7046C8890EDeEA30eEe93D;
     address stc=0x0c302E08DBB72a3F361512137936aD2cfA21eC74;
+    */
+
+    //Sepolia Addresses
+    address BadAppel=0xCfF6C87b4881A2Dc06050996Ad20C94f3378F289;
+    address stc=0x31716589c4703B4354F5a48DDD048AfEA7B19656;
 
     IERC20 BadApple = IERC20(BadAppel);
     IERC20 StableCoin = IERC20(stc);
@@ -37,42 +44,42 @@ contract Marketplace
 //page importante : https://docs.chain.link/data-feeds/price-feeds/addresses?network=ethereum&page=1
 
     //eth/USD Göerli address : 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
-    Chainlink eth = Chainlink(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
+    //Chainlink eth = Chainlink(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
 
     
+    //eth/USD Sepolia address : 0x694AA1769357215DE4FAC081bf1f309aDC325306
+    Chainlink eth = Chainlink(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+
     //Ducoup dans le front, faire un bouton approve, puis faire un bouton swap
     //le approve est un call via abi ERC20 sur le contract du bat token
     function swapSTCtoBAP(uint256 _amount) public
     {
        //préemptivement on allow le transferfrom de STC a BAP
        
+       require(StableCoin.allowance(msg.sender, address(this))== _amount,"Wrong allowance");
+
        (,int256 answer, , , ) =eth.latestRoundData();        
         
-        uint256 _due = (10**8)*(_amount)/(uint256(answer));
+        uint256 _due = (10**8)*(_amount*10**18)/(uint256(answer));
 
-
-
-        //Create liquidity in this contract to then give it to msg.sender
-        BadApple_Minter.CreateMoney(address(this),_due/10**8);
 
 
         StableCoin.transferFrom(msg.sender, address(this), _amount);
-        BadApple.transferFrom(address(this), msg.sender, _due/10**8);
+        BadApple.transfer( msg.sender, _due);
     }
 
         function swapBAPtoSTC(uint256 _amount) public
     {
+       
+       
        //préemptivement on allow le transferfrom de STC a BAP
        
        (,int256 answer, , , ) =eth.latestRoundData();        
         
-        uint256 _due = (10**8)*(_amount)*(uint256(answer));
-
-        //Create liquidity in this contract to then give it to msg.sender
-        StableCoin_Minter.CreateMoney(address(this),_due/10**8);
+        uint256 _due = (10**8)*(_amount*10**18)*(uint256(answer));
 
 
-        StableCoin.transferFrom(msg.sender, address(this), _amount);
-        BadApple.transferFrom(address(this), msg.sender, _due/10**8);
+        BadApple.transferFrom(msg.sender, address(this), _amount);
+        StableCoin.transfer(msg.sender, _due);
     }
 }
